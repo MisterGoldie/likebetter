@@ -9,7 +9,7 @@ import { Analytics } from "@vercel/analytics/react"
 const app = new Frog({
   assetsPath: '/',
   basePath: '/api',
-  title: 'degenorfarther',
+  title: 'likebetter',
 })
 
 app.frame('/', (c) => {
