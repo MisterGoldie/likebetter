@@ -8,7 +8,6 @@ const app = new Frog({
   assetsPath: '/',
   basePath: '/api',
   title: 'likebetter',
-  // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' }) // Uncomment and configure if needed
 })
 
 app.frame('/', (c) => {
@@ -16,8 +15,8 @@ app.frame('/', (c) => {
     action: '/picker',
     image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmcYBuqkV7MRavbb9yg4ZKihP4ZmfPSZNZhBitMuwCNXfa",
     intents: [
-      <Button value="A">A</Button>,
-      <Button value="B">B</Button>,
+      <Button value="A">$DEGEN</Button>,
+      <Button value="B">$FARTHER</Button>,
     ],
   })
 })
@@ -29,8 +28,8 @@ app.frame('/picker', (c) => {
   if (buttonValue === 'A') {
     return c.res({
       action: 'degen/a',
-      image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmVti6U1jYrWX8RwvJcNCHoKD6zXToDX9T6kfydH5iaxvY", // Required image property
-      imageAspectRatio: '1:1', // Optional, but useful
+      image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmVti6U1jYrWX8RwvJcNCHoKD6zXToDX9T6kfydH5iaxvY", 
+      imageAspectRatio: '1:1', 
       intents: [
         <Button action="/">Back</Button>,
       ],
@@ -38,8 +37,8 @@ app.frame('/picker', (c) => {
   } else if (buttonValue === 'B') {
     return c.res({
       action: 'farther/b',
-      image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmXfxPRruMHcfkpquxqPfvBeeY8Mfcnw8x2LKcs7TY2Jk5", // Required image property
-      imageAspectRatio: '1:1', // Optional, but useful
+      image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmXfxPRruMHcfkpquxqPfvBeeY8Mfcnw8x2LKcs7TY2Jk5", 
+      imageAspectRatio: '1:1', 
       intents: [
         <Button action="/">Back</Button>,
       ],
@@ -48,7 +47,7 @@ app.frame('/picker', (c) => {
     // Default response if buttonValue is not A or B
     return c.res({
       action: '/',
-      image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmcYBuqkV7MRavbb9yg4ZKihP4ZmfPSZNZhBitMuwCNXfa", // Required image property
+      image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmcYBuqkV7MRavbb9yg4ZKihP4ZmfPSZNZhBitMuwCNXfa", // OG frame image
       intents: [
         <Button action="/">Back</Button>,
       ],
