@@ -3,6 +3,7 @@ import { Button, Frog } from 'frog'
 import { devtools } from 'frog/dev'
 import { handle } from 'frog/next'
 import { serveStatic } from 'frog/serve-static'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const app = new Frog({
   assetsPath: '/',

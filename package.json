@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@vercel/speed-insights": "^1.0.12",
     "frog": "latest",
     "hono": "^4",
     "next": "^14.2.5",
