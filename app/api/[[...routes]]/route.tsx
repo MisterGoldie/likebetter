@@ -38,7 +38,7 @@ app.frame('/picker', (c) => {
   } else if (buttonValue === 'B') {
     return c.res({
       action: 'farther/b',
-      image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmTXUnNBVCJEuT6GYdxK1xrjizL2aJWTMWvo9q9Kx6hYje", // Required image property
+      image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmXfxPRruMHcfkpquxqPfvBeeY8Mfcnw8x2LKcs7TY2Jk5", // Required image property
       imageAspectRatio: '1:1', // Optional, but useful
       intents: [
         <Button action="/">Back</Button>,
