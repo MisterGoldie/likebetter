@@ -26,6 +26,7 @@ app.frame('/', (c) => {
 app.frame('/picker', (c) => {
   console.log('c', c)
   const { buttonValue } = c
+  const punycode = require('punycode');
 
   if (buttonValue === '$DEGEN') {
     return c.res({
