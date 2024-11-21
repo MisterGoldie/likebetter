@@ -4,12 +4,114 @@ import { devtools } from 'frog/dev'
 import { handle } from 'frog/next'
 import { serveStatic } from 'frog/serve-static'
 import { db } from '@/lib/firebase'
+import { neynar } from 'frog/middlewares'
 
-const app = new Frog({
-  assetsPath: '/',
+// API Constants
+const AIRSTACK_API_URL = 'https://api.airstack.xyz/gql';
+const AIRSTACK_API_KEY = process.env.AIRSTACK_API_KEY as string;
+const NEYNAR_API_KEY = process.env.NEYNAR_API_KEY as string;
+
+// Get Farcaster username from FID
+async function getUsername(fid: string): Promise<string> {
+  const query = `
+    query ($fid: String!) {
+      Socials(input: {filter: {dappName: {_eq: farcaster}, userId: {_eq: $fid}}, blockchain: ethereum}) {
+        Social {
+          profileName
+        }
+      }
+    }
+  `;
+
+  try {
+    const response = await fetch(AIRSTACK_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': AIRSTACK_API_KEY,
+      },
+      body: JSON.stringify({ query, variables: { fid } }),
+    });
+
+    const data = await response.json();
+    return data?.data?.Socials?.Social?.[0]?.profileName || 'Player';
+  } catch (error) {
+    console.error('Error fetching username:', error);
+    return 'Player';
+  }
+}
+
+// Get user's Farcaster addresses
+async function getFarcasterAddressesFromFID(fid: string): Promise<string[]> {
+  const query = `
+    query MyQuery($identity: Identity!) {
+      Socials(
+        input: {
+          filter: { dappName: { _eq: farcaster }, identity: { _eq: $identity } }
+          blockchain: ethereum
+        }
+      ) {
+        Social {
+          userAddress
+          userAssociatedAddresses
+        }
+      }
+    }
+  `;
+
+  try {
+    const response = await fetch(AIRSTACK_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': AIRSTACK_API_KEY,
+      },
+      body: JSON.stringify({ 
+        query, 
+        variables: { identity: `fc_fid:${fid}` } 
+      }),
+    });
+
+    const data = await response.json();
+    
+    if (!data?.data?.Socials?.Social?.[0]) {
+      return [];
+    }
+
+    const social = data.data.Socials.Social[0];
+    const addresses = [social.userAddress, ...(social.userAssociatedAddresses || [])];
+    return Array.from(new Set(addresses)); // Remove duplicates
+  } catch (error) {
+    console.error('Error fetching Farcaster addresses:', error);
+    return [];
+  }
+}
+
+// Initialize Frog app with Neynar middleware
+export const app = new Frog({
   basePath: '/api',
-  title: 'Poll',
-})
+  imageOptions: {
+    width: 1080,
+    height: 1080,
+  },
+  imageAspectRatio: '1:1',
+  title: 'Farcaster Fan Token Tracker',
+  hub: AIRSTACK_API_KEY ? {
+    apiUrl: "https://hubs.airstack.xyz",
+    fetchOptions: {
+      headers: {
+        "x-airstack-hubs": AIRSTACK_API_KEY,
+      }
+    }
+  } : undefined
+});
+
+app.use(
+  neynar({
+    apiKey: NEYNAR_API_KEY,
+    features: ['interactor', 'cast'],
+  })
+);
 
 // Helper function to get vote counts
 async function getVoteCounts() {
