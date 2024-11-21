@@ -33,10 +33,10 @@ app.frame('/', (c) => {
   
   return c.res({
     image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
-    imageAspectRatio: '1:1',
     intents: [
       <Button value="YES">Yes ({percentages.yes.toString()}%)</Button>,
       <Button value="NO">No ({percentages.no.toString()}%)</Button>,
+      <Button action="/stats">View Stats</Button>,
     ],
   })
 })
@@ -59,6 +59,23 @@ app.frame('/vote', (c) => {
     intents: [
       <Button value="YES">Yes ({percentages.yes.toString()}%)</Button>,
       <Button value="NO">No ({percentages.no.toString()}%)</Button>,
+      <Button action="/stats">View Stats</Button>,
+    ],
+  })
+})
+
+app.frame('/stats', (c) => {
+  const percentages = calculatePercentages()
+  const total = votes.yes + votes.no
+  
+  return c.res({
+    image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+    imageAspectRatio: '1:1',
+    intents: [
+      <Button>Total Votes: {total.toString()}</Button>,
+      <Button>Yes: {votes.yes.toString()} ({percentages.yes.toString()}%)</Button>,
+      <Button>No: {votes.no.toString()} ({percentages.no.toString()}%)</Button>,
+      <Button action="/">Back to Poll</Button>
     ],
   })
 })
