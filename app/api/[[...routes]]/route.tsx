@@ -77,12 +77,12 @@ app.frame('/vote', async (c) => {
   const userVote = await userVoteRef.get()
   
   if (userVote.exists) {
+    const counts = await getVoteCounts()
     return c.res({
-      image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+      image: "https://bafybeigmlsqkjwg4wvig7eedv7mynlbvwbuzzm4zhjjirmx3ekhkeipr7q.ipfs.w3s.link/Farcaster%20(81).png",
       imageAspectRatio: '1:1',
       intents: [
-        <Button>You have already voted!</Button>,
-        <Button action="/results">View Results</Button>
+        <Button action="/">Back to Poll</Button>
       ],
     })
   }
@@ -94,12 +94,15 @@ app.frame('/vote', async (c) => {
     timestamp: Date.now()
   })
 
+  const counts = await getVoteCounts()
+  const total = counts.yes + counts.no
+
   if (buttonValue === 'YES') {
     return c.res({
       image: "https://bafybeihnjhwwrscp2ercv5f4xdfyyiblpteslordcseht6lqbljgnilvn4.ipfs.w3s.link/Farcaster%20(74).png",
       imageAspectRatio: '1:1',
       intents: [
-        <Button action="/results">View Results</Button>
+        <Button action="/">Back to Poll</Button>
       ],
     })
   }
@@ -108,7 +111,7 @@ app.frame('/vote', async (c) => {
     image: "https://bafybeiaudldqpo24mdcwqfimkfiidclrwf4urgi6533eml5pxjimniqbou.ipfs.w3s.link/Farcaster%20(75).png",
     imageAspectRatio: '1:1',
     intents: [
-      <Button action="/results">View Results</Button>
+      <Button action="/">Back to Poll</Button>
     ],
   })
 })
@@ -121,9 +124,6 @@ app.frame('/results', async (c) => {
     image: "https://bafybeiceogeecf44c3fyqob3retsdwfoqesnttov4ze55tat4qksa3p74m.ipfs.w3s.link/Farcaster%20(80).png",
     imageAspectRatio: '1:1',
     intents: [
-      <Button>Total Votes: {total.toString()}</Button>,
-      <Button>Yes: {counts.yes.toString()}</Button>,
-      <Button>No: {counts.no.toString()}</Button>,
       <Button action="/">Back to Poll</Button>
     ],
   })
