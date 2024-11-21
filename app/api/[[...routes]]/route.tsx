@@ -38,8 +38,6 @@ function calculatePercentages(yes: number, no: number) {
 
 app.frame('/', async (c) => {
   const userId = c.frameData?.fid?.toString()
-  const counts = await getVoteCounts()
-  const percentages = calculatePercentages(counts.yes, counts.no)
   
   // Check if user has voted
   let hasVoted = false
@@ -50,12 +48,12 @@ app.frame('/', async (c) => {
   }
   
   return c.res({
-    image: `https://bafybeibxsg4r6prc4k5v5klq4bx4oj7nay53ltnpmzumkxtxou3xlbumwq.ipfs.w3s.link/Group%2062%20(5).png?votes=yes:${counts.yes}%20no:${counts.no}`,
+    image: "https://bafybeibxsg4r6prc4k5v5klq4bx4oj7nay53ltnpmzumkxtxou3xlbumwq.ipfs.w3s.link/Group%2062%20(5).png",
     imageAspectRatio: '1:1',
     intents: [
-      <Button action="/vote" value="YES">Yes ({percentages.yes.toString()}%)</Button>,
-      <Button action="/vote" value="NO">No ({percentages.no.toString()}%)</Button>,
-      ...(hasVoted ? [<Button action="/stats">View Stats</Button>] : []),
+      <Button action="/vote" value="YES">Yes</Button>,
+      <Button action="/vote" value="NO">No</Button>,
+      ...(hasVoted ? [<Button action="/results">View Results</Button>] : []),
     ],
   })
 })
@@ -74,22 +72,34 @@ app.frame('/vote', async (c) => {
     })
   }
 
-  // Update or create vote
+  // Check if user has already voted
   const userVoteRef = db.collection('votes').doc(userId)
+  const userVote = await userVoteRef.get()
+  
+  if (userVote.exists) {
+    return c.res({
+      image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+      imageAspectRatio: '1:1',
+      intents: [
+        <Button>You have already voted!</Button>,
+        <Button action="/results">View Results</Button>
+      ],
+    })
+  }
+
+  // Record new vote
   await userVoteRef.set({
     userId,
     vote: buttonValue,
     timestamp: Date.now()
-  }, { merge: true })
+  })
 
   if (buttonValue === 'YES') {
     return c.res({
       image: "https://bafybeihnjhwwrscp2ercv5f4xdfyyiblpteslordcseht6lqbljgnilvn4.ipfs.w3s.link/Farcaster%20(74).png",
       imageAspectRatio: '1:1',
       intents: [
-        <Button action="/vote" value="YES">Yes</Button>,
-        <Button action="/vote" value="NO">No</Button>,
-        <Button action="/stats">View Stats</Button>,
+        <Button action="/results">View Results</Button>
       ],
     })
   }
@@ -98,16 +108,13 @@ app.frame('/vote', async (c) => {
     image: "https://bafybeiaudldqpo24mdcwqfimkfiidclrwf4urgi6533eml5pxjimniqbou.ipfs.w3s.link/Farcaster%20(75).png",
     imageAspectRatio: '1:1',
     intents: [
-      <Button action="/vote" value="YES">Yes</Button>,
-      <Button action="/vote" value="NO">No</Button>,
-      <Button action="/stats">View Stats</Button>,
+      <Button action="/results">View Results</Button>
     ],
   })
 })
 
-app.frame('/stats', async (c) => {
+app.frame('/results', async (c) => {
   const counts = await getVoteCounts()
-  const percentages = calculatePercentages(counts.yes, counts.no)
   const total = counts.yes + counts.no
   
   return c.res({
@@ -115,8 +122,8 @@ app.frame('/stats', async (c) => {
     imageAspectRatio: '1:1',
     intents: [
       <Button>Total Votes: {total.toString()}</Button>,
-      <Button>Yes: {counts.yes.toString()} ({percentages.yes.toString()}%)</Button>,
-      <Button>No: {counts.no.toString()} ({percentages.no.toString()}%)</Button>,
+      <Button>Yes: {counts.yes.toString()}</Button>,
+      <Button>No: {counts.no.toString()}</Button>,
       <Button action="/">Back to Poll</Button>
     ],
   })
