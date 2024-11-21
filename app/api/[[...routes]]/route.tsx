@@ -50,11 +50,11 @@ app.frame('/', async (c) => {
   }
   
   return c.res({
-    image: "https://bafybeibxsg4r6prc4k5v5klq4bx4oj7nay53ltnpmzumkxtxou3xlbumwq.ipfs.w3s.link/Group%2062%20(5).png",
+    image: `https://bafybeibxsg4r6prc4k5v5klq4bx4oj7nay53ltnpmzumkxtxou3xlbumwq.ipfs.w3s.link/Group%2062%20(5).png?votes=yes:${counts.yes}%20no:${counts.no}`,
     imageAspectRatio: '1:1',
     intents: [
-      <Button action="/vote" value="YES">Yes</Button>,
-      <Button action="/vote" value="NO">No</Button>,
+      <Button action="/vote" value="YES">Yes ({percentages.yes.toString()}%)</Button>,
+      <Button action="/vote" value="NO">No ({percentages.no.toString()}%)</Button>,
       ...(hasVoted ? [<Button action="/stats">View Stats</Button>] : []),
     ],
   })
