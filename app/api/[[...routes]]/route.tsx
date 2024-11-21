@@ -118,15 +118,13 @@ app.frame('/vote', async (c) => {
 
 app.frame('/results', async (c) => {
   const counts = await getVoteCounts()
-  const total = counts.yes + counts.no
   
   return c.res({
     image: "https://bafybeiceogeecf44c3fyqob3retsdwfoqesnttov4ze55tat4qksa3p74m.ipfs.w3s.link/Farcaster%20(80).png",
     imageAspectRatio: '1:1',
     intents: [
-      <Button>Total Votes: {total.toString()}</Button>,
-      <Button>Yes Votes: {counts.yes.toString()}</Button>,
-      <Button>No Votes: {counts.no.toString()}</Button>,
+      <Button>Yes: {counts.yes.toString()}</Button>,
+      <Button>No: {counts.no.toString()}</Button>,
       <Button action="/">Back to Poll</Button>
     ],
   })
