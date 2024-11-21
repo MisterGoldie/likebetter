@@ -13,7 +13,7 @@ const app = new Frog({
 app.frame('/', (c) => {
   return c.res({
     action: '/picker',
-    image: "https://bafybeibxsttg3o4pu33pzqtjy4pr6m6oiw5txq54fk5vdne5u4pifxtexa.ipfs.w3s.link/Group%2062%20(2).png",
+    image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
     intents: [
       <Button value="YES">Yes</Button>,
       <Button value="NO">No</Button>,
@@ -28,7 +28,7 @@ app.frame('/picker', (c) => {
 
   if (buttonValue === 'YES') {
     return c.res({
-      action: 'degen/a',
+      action: 'yes/a',
       image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmVti6U1jYrWX8RwvJcNCHoKD6zXToDX9T6kfydH5iaxvY", 
       imageAspectRatio: '1:1', 
       intents: [
@@ -37,7 +37,7 @@ app.frame('/picker', (c) => {
     })
   } else if (buttonValue === 'NO') {
     return c.res({
-      action: 'farther/b',
+      action: 'no/b',
       image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmXfxPRruMHcfkpquxqPfvBeeY8Mfcnw8x2LKcs7TY2Jk5", 
       imageAspectRatio: '1:1', 
       intents: [
