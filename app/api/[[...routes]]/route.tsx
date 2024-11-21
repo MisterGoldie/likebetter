@@ -33,8 +33,8 @@ app.frame('/', (c) => {
     image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
     imageAspectRatio: '1:1',
     intents: [
-      <Button action="/vote" value="YES">Yes ({percentages.yes.toString()}%)</Button>,
-      <Button action="/vote" value="NO">No ({percentages.no.toString()}%)</Button>,
+      <Button value="YES">Yes ({percentages.yes.toString()}%)</Button>,
+      <Button value="NO">No ({percentages.no.toString()}%)</Button>,
       <Button action="/stats">View Stats</Button>,
     ],
   })
@@ -42,14 +42,11 @@ app.frame('/', (c) => {
 
 app.frame('/vote', (c) => {
   const { buttonValue } = c
-  console.log('Vote received:', buttonValue) // Debug log
   
   if (buttonValue === 'YES') {
     votes.yes++
-    console.log('Yes votes:', votes.yes) // Debug log
   } else if (buttonValue === 'NO') {
     votes.no++
-    console.log('No votes:', votes.no) // Debug log
   }
   
   const percentages = calculatePercentages()
@@ -58,8 +55,8 @@ app.frame('/vote', (c) => {
     image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
     imageAspectRatio: '1:1',
     intents: [
-      <Button action="/vote" value="YES">Yes ({percentages.yes.toString()}%)</Button>,
-      <Button action="/vote" value="NO">No ({percentages.no.toString()}%)</Button>,
+      <Button value="YES">Yes ({percentages.yes.toString()}%)</Button>,
+      <Button value="NO">No ({percentages.no.toString()}%)</Button>,
       <Button action="/stats">View Stats</Button>,
     ],
   })
