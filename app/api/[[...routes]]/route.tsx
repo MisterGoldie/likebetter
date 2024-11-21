@@ -5,7 +5,6 @@ import { handle } from 'frog/next'
 import { serveStatic } from 'frog/serve-static'
 
 // Create a simple in-memory store for votes
-// Note: This will reset when the server restarts
 let votes = {
   yes: 0,
   no: 0
@@ -17,7 +16,6 @@ const app = new Frog({
   title: 'Poll',
 })
 
-// Helper function to calculate percentages
 function calculatePercentages() {
   const total = votes.yes + votes.no
   if (total === 0) return { yes: 0, no: 0 }
