@@ -32,7 +32,7 @@ app.frame('/', (c) => {
   const percentages = calculatePercentages()
   
   return c.res({
-    image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+    image: "https://bafybeibxsg4r6prc4k5v5klq4bx4oj7nay53ltnpmzumkxtxou3xlbumwq.ipfs.w3s.link/Group%2062%20(5).png",
     imageAspectRatio: '1:1',
     intents: [
       <Button action="/vote" value="YES">Yes ({percentages.yes.toString()}%)</Button>,
