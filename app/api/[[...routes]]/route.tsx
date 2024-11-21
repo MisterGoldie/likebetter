@@ -36,6 +36,18 @@ function calculatePercentages(yes: number, no: number) {
   }
 }
 
+// Add this helper function at the top with other helpers
+function constructShareUrl(userId: string, vote: string, counts: { yes: number, no: number }) {
+  const shareText = `I voted ${vote} on whether Bitcoin will hit $100K this week! Current results - Yes: ${counts.yes}, No: ${counts.no}. Vote now! Frame by @goldie`;
+  
+  // Construct the share URL as a Farcaster frame
+  const shareUrl = new URL('https://goldiesnftframes.xyz/api');
+  shareUrl.searchParams.append('fid', userId);
+  
+  // Construct the Farcaster share URL
+  return `https://warpcast.com/~/compose?text=${encodeURIComponent(shareText)}&embeds[]=${encodeURIComponent(shareUrl.toString())}`;
+}
+
 app.frame('/', async (c) => {
   return c.res({
     image: "https://bafybeibxsg4r6prc4k5v5klq4bx4oj7nay53ltnpmzumkxtxou3xlbumwq.ipfs.w3s.link/Group%2062%20(5).png",
@@ -89,6 +101,7 @@ app.frame('/vote', async (c) => {
       imageAspectRatio: '1:1',
       intents: [
         <Button action="/results">View Results</Button>,
+        <Button action="/share">Share</Button>,
         <Button action="/">Back to Poll</Button>
       ],
     })
@@ -99,6 +112,7 @@ app.frame('/vote', async (c) => {
     imageAspectRatio: '1:1',
     intents: [
       <Button action="/results">View Results</Button>,
+      <Button action="/share">Share</Button>,
       <Button action="/">Back to Poll</Button>
     ],
   })
@@ -113,6 +127,47 @@ app.frame('/results', async (c) => {
     intents: [
       <Button>Yes: {counts.yes.toString()}</Button>,
       <Button>No: {counts.no.toString()}</Button>,
+      <Button action="/">Back to Poll</Button>
+    ],
+  })
+})
+
+app.frame('/share', async (c) => {
+  const userId = c.frameData?.fid?.toString()
+  
+  if (!userId) {
+    return c.res({
+      image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+      imageAspectRatio: '1:1',
+      intents: [
+        <Button>Please sign in to share</Button>
+      ],
+    })
+  }
+
+  // Get user's vote and current counts
+  const userVoteRef = db.collection('votes').doc(userId)
+  const userVote = await userVoteRef.get()
+  const counts = await getVoteCounts()
+  
+  if (!userVote.exists) {
+    return c.res({
+      image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+      imageAspectRatio: '1:1',
+      intents: [
+        <Button>Vote first to share!</Button>,
+        <Button action="/">Back to Poll</Button>
+      ],
+    })
+  }
+
+  const shareUrl = constructShareUrl(userId, userVote.data()?.vote, counts)
+
+  return c.res({
+    image: "https://bafybeiceogeecf44c3fyqob3retsdwfoqesnttov4ze55tat4qksa3p74m.ipfs.w3s.link/Farcaster%20(80).png",
+    imageAspectRatio: '1:1',
+    intents: [
+      <Button.Link href={shareUrl}>Share to Warpcast</Button.Link>,
       <Button action="/">Back to Poll</Button>
     ],
   })
