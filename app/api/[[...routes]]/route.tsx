@@ -37,23 +37,12 @@ function calculatePercentages(yes: number, no: number) {
 }
 
 app.frame('/', async (c) => {
-  const userId = c.frameData?.fid?.toString()
-  
-  // Check if user has voted
-  let hasVoted = false
-  if (userId) {
-    const userVoteRef = db.collection('votes').doc(userId)
-    const userVote = await userVoteRef.get()
-    hasVoted = userVote.exists
-  }
-  
   return c.res({
     image: "https://bafybeibxsg4r6prc4k5v5klq4bx4oj7nay53ltnpmzumkxtxou3xlbumwq.ipfs.w3s.link/Group%2062%20(5).png",
     imageAspectRatio: '1:1',
     intents: [
       <Button action="/vote" value="YES">Yes</Button>,
-      <Button action="/vote" value="NO">No</Button>,
-      ...(hasVoted ? [<Button action="/results">View Results</Button>] : []),
+      <Button action="/vote" value="NO">No</Button>
     ],
   })
 })
@@ -77,11 +66,11 @@ app.frame('/vote', async (c) => {
   const userVote = await userVoteRef.get()
   
   if (userVote.exists) {
-    const counts = await getVoteCounts()
     return c.res({
       image: "https://bafybeigmlsqkjwg4wvig7eedv7mynlbvwbuzzm4zhjjirmx3ekhkeipr7q.ipfs.w3s.link/Farcaster%20(81).png",
       imageAspectRatio: '1:1',
       intents: [
+        <Button action="/results">View Results</Button>,
         <Button action="/">Back to Poll</Button>
       ],
     })
@@ -94,14 +83,12 @@ app.frame('/vote', async (c) => {
     timestamp: Date.now()
   })
 
-  const counts = await getVoteCounts()
-  const total = counts.yes + counts.no
-
   if (buttonValue === 'YES') {
     return c.res({
       image: "https://bafybeihnjhwwrscp2ercv5f4xdfyyiblpteslordcseht6lqbljgnilvn4.ipfs.w3s.link/Farcaster%20(74).png",
       imageAspectRatio: '1:1',
       intents: [
+        <Button action="/results">View Results</Button>,
         <Button action="/">Back to Poll</Button>
       ],
     })
@@ -111,6 +98,7 @@ app.frame('/vote', async (c) => {
     image: "https://bafybeiaudldqpo24mdcwqfimkfiidclrwf4urgi6533eml5pxjimniqbou.ipfs.w3s.link/Farcaster%20(75).png",
     imageAspectRatio: '1:1',
     intents: [
+      <Button action="/results">View Results</Button>,
       <Button action="/">Back to Poll</Button>
     ],
   })
