@@ -13,10 +13,10 @@ const app = new Frog({
 app.frame('/', (c) => {
   return c.res({
     action: '/picker',
-    image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmcYBuqkV7MRavbb9yg4ZKihP4ZmfPSZNZhBitMuwCNXfa",
+    image: "https://bafybeibxsttg3o4pu33pzqtjy4pr6m6oiw5txq54fk5vdne5u4pifxtexa.ipfs.w3s.link/Group%2062%20(2).png",
     intents: [
-      <Button value="$DEGEN">$DEGEN</Button>,
-      <Button value="$FARTHER">$FARTHER</Button>,
+      <Button value="YES">Yes</Button>,
+      <Button value="NO">No</Button>,
     ],
   })
 })
@@ -26,7 +26,7 @@ app.frame('/picker', (c) => {
   const { buttonValue } = c
   const punycode = require('punycode');
 
-  if (buttonValue === '$DEGEN') {
+  if (buttonValue === 'YES') {
     return c.res({
       action: 'degen/a',
       image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmVti6U1jYrWX8RwvJcNCHoKD6zXToDX9T6kfydH5iaxvY", 
@@ -35,7 +35,7 @@ app.frame('/picker', (c) => {
         <Button action="/">Back</Button>,
       ],
     })
-  } else if (buttonValue === '$FARTHER') {
+  } else if (buttonValue === 'NO') {
     return c.res({
       action: 'farther/b',
       image: "https://amaranth-adequate-condor-278.mypinata.cloud/ipfs/QmXfxPRruMHcfkpquxqPfvBeeY8Mfcnw8x2LKcs7TY2Jk5", 
