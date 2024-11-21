@@ -83,6 +83,7 @@ app.frame('/vote', async (c) => {
       imageAspectRatio: '1:1',
       intents: [
         <Button action="/results">View Results</Button>,
+        <Button.Link href={`https://warpcast.com/~/compose?text=${encodeURIComponent('Vote on whether Bitcoin will hit $100K this week! Frame by @goldie')}&embeds[]=${encodeURIComponent('https://goldiesnftframes.xyz/api')}`}>Share Frame</Button.Link>,
         <Button action="/">Back to Poll</Button>
       ],
     })
@@ -101,7 +102,7 @@ app.frame('/vote', async (c) => {
       imageAspectRatio: '1:1',
       intents: [
         <Button action="/results">View Results</Button>,
-        <Button action="/share">Share</Button>,
+        <Button action="/share">Share Frame</Button>,
         <Button action="/">Back to Poll</Button>
       ],
     })
@@ -112,7 +113,7 @@ app.frame('/vote', async (c) => {
     imageAspectRatio: '1:1',
     intents: [
       <Button action="/results">View Results</Button>,
-      <Button action="/share">Share</Button>,
+      <Button action="/share">Share Frame</Button>,
       <Button action="/">Back to Poll</Button>
     ],
   })
