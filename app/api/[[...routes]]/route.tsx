@@ -3,13 +3,7 @@ import { Button, Frog } from 'frog'
 import { devtools } from 'frog/dev'
 import { handle } from 'frog/next'
 import { serveStatic } from 'frog/serve-static'
-
-// Create a simple in-memory store for votes
-// Note: This will reset when the server restarts
-let votes = {
-  yes: 0,
-  no: 0
-}
+import { db } from '@/lib/firebase'
 
 const app = new Frog({
   assetsPath: '/',
@@ -17,87 +11,110 @@ const app = new Frog({
   title: 'Poll',
 })
 
+// Helper function to get vote counts
+async function getVoteCounts() {
+  const snapshot = await db.collection('votes').get()
+  let yes = 0
+  let no = 0
+  
+  snapshot.forEach(doc => {
+    if (doc.data().vote === 'YES') yes++
+    if (doc.data().vote === 'NO') no++
+  })
+  
+  return { yes, no }
+}
+
 // Helper function to calculate percentages
-function calculatePercentages() {
-  const total = votes.yes + votes.no
+function calculatePercentages(yes: number, no: number) {
+  const total = yes + no
   if (total === 0) return { yes: 0, no: 0 }
   
   return {
-    yes: Math.round((votes.yes / total) * 100),
-    no: Math.round((votes.no / total) * 100)
+    yes: Math.round((yes / total) * 100),
+    no: Math.round((no / total) * 100)
   }
 }
 
-app.frame('/', (c) => {
-  const percentages = calculatePercentages()
+app.frame('/', async (c) => {
+  const counts = await getVoteCounts()
+  const percentages = calculatePercentages(counts.yes, counts.no)
   
   return c.res({
     image: "https://bafybeibxsg4r6prc4k5v5klq4bx4oj7nay53ltnpmzumkxtxou3xlbumwq.ipfs.w3s.link/Group%2062%20(5).png",
     imageAspectRatio: '1:1',
     intents: [
-      <Button action="/vote" value="YES">Yes ({percentages.yes.toString()}%)</Button>,
-      <Button action="/vote" value="NO">No ({percentages.no.toString()}%)</Button>,
+      <Button action="/vote" value="YES">Yes</Button>,
+      <Button action="/vote" value="NO">No</Button>,
       <Button action="/stats">View Stats</Button>,
     ],
   })
 })
 
-app.frame('/vote', (c) => {
+app.frame('/vote', async (c) => {
   const { buttonValue } = c
-  console.log('Vote received:', buttonValue) // Debug log
+  const userId = c.frameData?.fid?.toString()
   
+  if (!userId) {
+    return c.res({
+      image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+      imageAspectRatio: '1:1',
+      intents: [
+        <Button>Please sign in to vote</Button>
+      ],
+    })
+  }
+
+  // Check if user already voted
+  const userVoteRef = db.collection('votes').doc(userId)
+  const userVote = await userVoteRef.get()
+
+  // Update or create vote
+  await userVoteRef.set({
+    userId,
+    vote: buttonValue,
+    timestamp: Date.now()
+  }, { merge: true })
+
+  const counts = await getVoteCounts()
+  const percentages = calculatePercentages(counts.yes, counts.no)
+
   if (buttonValue === 'YES') {
-    votes.yes++
-    console.log('Yes votes:', votes.yes) // Debug log
-    const percentages = calculatePercentages()
     return c.res({
       image: "https://bafybeihnjhwwrscp2ercv5f4xdfyyiblpteslordcseht6lqbljgnilvn4.ipfs.w3s.link/Farcaster%20(74).png",
       imageAspectRatio: '1:1',
       intents: [
-        <Button action="/vote" value="YES">Yes ({percentages.yes.toString()}%)</Button>,
-        <Button action="/vote" value="NO">No ({percentages.no.toString()}%)</Button>,
-        <Button action="/stats">View Stats</Button>,
-      ],
-    })
-  } else if (buttonValue === 'NO') {
-    votes.no++
-    console.log('No votes:', votes.no) // Debug log
-    const percentages = calculatePercentages()
-    return c.res({
-      image: "https://bafybeiaudldqpo24mdcwqfimkfiidclrwf4urgi6533eml5pxjimniqbou.ipfs.w3s.link/Farcaster%20(75).png",
-      imageAspectRatio: '1:1',
-      intents: [
-        <Button action="/vote" value="YES">Yes ({percentages.yes.toString()}%)</Button>,
-        <Button action="/vote" value="NO">No ({percentages.no.toString()}%)</Button>,
+        <Button action="/vote" value="YES">Yes</Button>,
+        <Button action="/vote" value="NO">No</Button>,
         <Button action="/stats">View Stats</Button>,
       ],
     })
   }
   
-  // Default return if no button was pressed
-  const percentages = calculatePercentages()
+  // Default to NO vote response (covers both NO votes and any other unexpected values)
   return c.res({
-    image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+    image: "https://bafybeiaudldqpo24mdcwqfimkfiidclrwf4urgi6533eml5pxjimniqbou.ipfs.w3s.link/Farcaster%20(75).png",
     imageAspectRatio: '1:1',
     intents: [
-      <Button action="/vote" value="YES">Yes ({percentages.yes.toString()}%)</Button>,
-      <Button action="/vote" value="NO">No ({percentages.no.toString()}%)</Button>,
+      <Button action="/vote" value="YES">Yes</Button>,
+      <Button action="/vote" value="NO">No</Button>,
       <Button action="/stats">View Stats</Button>,
     ],
   })
 })
 
-app.frame('/stats', (c) => {
-  const percentages = calculatePercentages()
-  const total = votes.yes + votes.no
+app.frame('/stats', async (c) => {
+  const counts = await getVoteCounts()
+  const percentages = calculatePercentages(counts.yes, counts.no)
+  const total = counts.yes + counts.no
   
   return c.res({
     image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
     imageAspectRatio: '1:1',
     intents: [
       <Button>Total Votes: {total.toString()}</Button>,
-      <Button>Yes: {votes.yes.toString()} ({percentages.yes.toString()}%)</Button>,
-      <Button>No: {votes.no.toString()} ({percentages.no.toString()}%)</Button>,
+      <Button>Yes: {counts.yes.toString()} ({percentages.yes.toString()}%)</Button>,
+      <Button>No: {counts.no.toString()} ({percentages.no.toString()}%)</Button>,
       <Button action="/">Back to Poll</Button>
     ],
   })
