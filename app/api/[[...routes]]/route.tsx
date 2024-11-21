@@ -109,7 +109,7 @@ app.frame('/stats', async (c) => {
   const total = counts.yes + counts.no
   
   return c.res({
-    image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+    image: "https://bafybeiceogeecf44c3fyqob3retsdwfoqesnttov4ze55tat4qksa3p74m.ipfs.w3s.link/Farcaster%20(80).png",
     imageAspectRatio: '1:1',
     intents: [
       <Button>Total Votes: {total.toString()}</Button>,
