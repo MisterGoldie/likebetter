@@ -54,8 +54,8 @@ app.frame('/vote', (c) => {
       image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
       imageAspectRatio: '1:1',
       intents: [
-        <Button action="/vote" value="YES">Yes</Button>,
-        <Button action="/vote" value="NO">No</Button>,
+        <Button action="/vote" value="YES">Yes ({percentages.yes.toString()}%)</Button>,
+        <Button action="/vote" value="NO">No ({percentages.no.toString()}%)</Button>,
         <Button action="/stats">View Stats</Button>,
       ],
     })
@@ -67,8 +67,8 @@ app.frame('/vote', (c) => {
       image: "https://bafybeiaudldqpo24mdcwqfimkfiidclrwf4urgi6533eml5pxjimniqbou.ipfs.w3s.link/Farcaster%20(75).png",
       imageAspectRatio: '1:1',
       intents: [
-        <Button action="/vote" value="YES">Yes</Button>,
-        <Button action="/vote" value="NO">No</Button>,
+        <Button action="/vote" value="YES">Yes ({percentages.yes.toString()}%)</Button>,
+        <Button action="/vote" value="NO">No ({percentages.no.toString()}%)</Button>,
         <Button action="/stats">View Stats</Button>,
       ],
     })
@@ -80,8 +80,8 @@ app.frame('/vote', (c) => {
     image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
     imageAspectRatio: '1:1',
     intents: [
-      <Button action="/vote" value="YES">Yes</Button>,
-      <Button action="/vote" value="NO">No</Button>,
+      <Button action="/vote" value="YES">Yes ({percentages.yes.toString()}%)</Button>,
+      <Button action="/vote" value="NO">No ({percentages.no.toString()}%)</Button>,
       <Button action="/stats">View Stats</Button>,
     ],
   })
