@@ -51,7 +51,7 @@ app.frame('/vote', (c) => {
     console.log('Yes votes:', votes.yes) // Debug log
     const percentages = calculatePercentages()
     return c.res({
-      image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+      image: "https://bafybeihnjhwwrscp2ercv5f4xdfyyiblpteslordcseht6lqbljgnilvn4.ipfs.w3s.link/Farcaster%20(74).png",
       imageAspectRatio: '1:1',
       intents: [
         <Button action="/vote" value="YES">Yes ({percentages.yes.toString()}%)</Button>,
