@@ -126,7 +126,7 @@ app.frame('/results', async (c) => {
       <Button>Yes: {counts.yes.toString()}</Button>,
       <Button>No: {counts.no.toString()}</Button>,
       <Button action="/">Back to Poll</Button>,
-      <Button.Link href={`https://warpcast.com/~/compose?text=${encodeURIComponent('Vote on whether Bitcoin will hit $100K this week! Frame by @goldie')}&embeds[]=${encodeURIComponent('https://goldiesnftframes.xyz/api')}`}>Share Frame</Button.Link>
+      <Button.Link href={`https://warpcast.com/~/compose?text=${encodeURIComponent('Vote on whether /bitcoin will hit $100K this week! Frame by @goldie')}&embeds[]=${encodeURIComponent('https://goldiesnftframes.xyz/api')}`}>Share Frame</Button.Link>
     ],
   })
 })
