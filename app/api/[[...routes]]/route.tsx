@@ -3,8 +3,6 @@ import { Button, Frog } from 'frog'
 import { devtools } from 'frog/dev'
 import { handle } from 'frog/next'
 import { serveStatic } from 'frog/serve-static'
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/react"
 
 const app = new Frog({
   assetsPath: '/',
@@ -62,3 +60,4 @@ devtools(app, { serveStatic })
 
 export const GET = handle(app)
 export const POST = handle(app)
+//
