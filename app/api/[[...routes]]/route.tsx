@@ -44,9 +44,12 @@ app.frame('/', (c) => {
 
 app.frame('/vote', (c) => {
   const { buttonValue } = c
+  console.log('Vote received:', buttonValue) // Debug log
   
   if (buttonValue === 'YES') {
     votes.yes++
+    console.log('Yes votes:', votes.yes) // Debug log
+    const percentages = calculatePercentages()
     return c.res({
       image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
       imageAspectRatio: '1:1',
@@ -58,6 +61,8 @@ app.frame('/vote', (c) => {
     })
   } else if (buttonValue === 'NO') {
     votes.no++
+    console.log('No votes:', votes.no) // Debug log
+    const percentages = calculatePercentages()
     return c.res({
       image: "https://bafybeiaudldqpo24mdcwqfimkfiidclrwf4urgi6533eml5pxjimniqbou.ipfs.w3s.link/Farcaster%20(75).png",
       imageAspectRatio: '1:1',
@@ -70,6 +75,7 @@ app.frame('/vote', (c) => {
   }
   
   // Default return if no button was pressed
+  const percentages = calculatePercentages()
   return c.res({
     image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
     imageAspectRatio: '1:1',
