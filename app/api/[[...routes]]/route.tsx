@@ -50,7 +50,7 @@ function constructShareUrl(userId: string, vote: string, counts: { yes: number, 
 
 app.frame('/', async (c) => {
   return c.res({
-    image: "https://bafybeiaqqsjtsuoz3czhcw5hhluovjtbmvtvdik2gkuj35m75rthvnqxie.ipfs.w3s.link/Farcaster%20(82).png",
+    image: "https://bafybeig7yyoqw7lsmbu46qkz25xs3yo3yapp6ezai6z3h3cqckny2qjo2a.ipfs.w3s.link/Farcaster%20(84).png",
     imageAspectRatio: '1:1',
     intents: [
       <Button action="/vote" value="YES">Yes</Button>,
