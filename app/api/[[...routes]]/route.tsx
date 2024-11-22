@@ -38,7 +38,7 @@ function calculatePercentages(yes: number, no: number) {
 
 // Add this helper function at the top with other helpers
 function constructShareUrl(userId: string, vote: string, counts: { yes: number, no: number }) {
-  const shareText = `I voted ${vote} on whether Bitcoin will hit $100K this week! Current results - Yes: ${counts.yes}, No: ${counts.no}. Vote now! Frame by @goldie`;
+  const shareText = `I voted ${vote} on whether Bitcoin will hit $100K today! Current results - Yes: ${counts.yes}, No: ${counts.no}. Vote now! Frame by @goldie`;
   
   // Construct the share URL as a Farcaster frame
   const shareUrl = new URL('https://goldiesnftframes.xyz/api');
@@ -97,7 +97,7 @@ app.frame('/vote', async (c) => {
 
   if (buttonValue === 'YES') {
     return c.res({
-      image: "https://bafybeihnjhwwrscp2ercv5f4xdfyyiblpteslordcseht6lqbljgnilvn4.ipfs.w3s.link/Farcaster%20(74).png",
+      image: "https://bafybeifzynkkdfgdttdmux65s6buty22zhxm5zhipuitgzrrb4ty3yrsha.ipfs.w3s.link/Frame%2067%20(3).png",
       imageAspectRatio: '1:1',
       intents: [
         <Button action="/results">View Results</Button>,
@@ -107,7 +107,7 @@ app.frame('/vote', async (c) => {
   }
   
   return c.res({
-    image: "https://bafybeiaudldqpo24mdcwqfimkfiidclrwf4urgi6533eml5pxjimniqbou.ipfs.w3s.link/Farcaster%20(75).png",
+    image: "https://bafybeihsbgvreneltxlehbbvwm63r5ufweqmgnu6thuiatwazytf2vh47a.ipfs.w3s.link/Frame%2067%20(5).png",
     imageAspectRatio: '1:1',
     intents: [
       <Button action="/results">View Results</Button>,
@@ -120,7 +120,7 @@ app.frame('/results', async (c) => {
   const counts = await getVoteCounts()
   
   return c.res({
-    image: "https://bafybeiceogeecf44c3fyqob3retsdwfoqesnttov4ze55tat4qksa3p74m.ipfs.w3s.link/Farcaster%20(80).png",
+    image: "https://bafybeicdmvkkmagmluzi435faddfx4qxoeiwbmgbgg43kkuis3wewpfg6e.ipfs.w3s.link/Frame%2067%20(2).png",
     imageAspectRatio: '1:1',
     intents: [
       <Button>Yes: {counts.yes.toString()}</Button>,
@@ -136,7 +136,7 @@ app.frame('/share', async (c) => {
   
   if (!userId) {
     return c.res({
-      image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+      image: "https://bafybeia5u2gao7y65ny3qp73m3ctmvqofvzspz3vi3veclwddxkhsy5lcu.ipfs.w3s.link/Frame%2067.png",
       imageAspectRatio: '1:1',
       intents: [
         <Button>Please sign in to share</Button>
@@ -151,7 +151,7 @@ app.frame('/share', async (c) => {
   
   if (!userVote.exists) {
     return c.res({
-      image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+      image: "https://bafybeia6oa7cvd7bj6ttwkunq3xghbw3vcmzqhzsa6gdiunhlznga5b7uq.ipfs.w3s.link/Frame%2067%20(1).png",
       imageAspectRatio: '1:1',
       intents: [
         <Button>Vote first to share!</Button>,
@@ -163,7 +163,7 @@ app.frame('/share', async (c) => {
   const shareUrl = constructShareUrl(userId, userVote.data()?.vote, counts)
 
   return c.res({
-    image: "https://bafybeiceogeecf44c3fyqob3retsdwfoqesnttov4ze55tat4qksa3p74m.ipfs.w3s.link/Farcaster%20(80).png",
+    image: "https://bafybeicdmvkkmagmluzi435faddfx4qxoeiwbmgbgg43kkuis3wewpfg6e.ipfs.w3s.link/Frame%2067%20(2).png",
     imageAspectRatio: '1:1',
     intents: [
       <Button.Link href={shareUrl}>Share to Warpcast</Button.Link>,
