@@ -48,6 +48,11 @@ function constructShareUrl(userId: string, vote: string, counts: { yes: number, 
   return `https://warpcast.com/~/compose?text=${encodeURIComponent(shareText)}&embeds[]=${encodeURIComponent(shareUrl.toString())}`;
 }
 
+// Add this helper function
+function canBypassVoteCheck(fid: string): boolean {
+  return fid === '7472'; // Your FID for testing
+}
+
 app.frame('/', async (c) => {
   return c.res({
     image: "https://bafybeia5u2gao7y65ny3qp73m3ctmvqofvzspz3vi3veclwddxkhsy5lcu.ipfs.w3s.link/Frame%2067.png",
@@ -65,7 +70,7 @@ app.frame('/vote', async (c) => {
   
   if (!userId) {
     return c.res({
-      image: "https://bafybeia5u2gao7y65ny3qp73m3ctmvqofvzspz3vi3veclwddxkhsy5lcu.ipfs.w3s.link/Frame%2067.png",
+      image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
       imageAspectRatio: '1:1',
       intents: [
         <Button>Please sign in to vote</Button>
@@ -73,11 +78,11 @@ app.frame('/vote', async (c) => {
     })
   }
 
-  // Check if user has already voted
+  // Check if user has already voted (skip check for FID 7472)
   const userVoteRef = db.collection('votes').doc(userId)
   const userVote = await userVoteRef.get()
   
-  if (userVote.exists) {
+  if (userVote.exists && !canBypassVoteCheck(userId)) {
     return c.res({
       image: "https://bafybeia6oa7cvd7bj6ttwkunq3xghbw3vcmzqhzsa6gdiunhlznga5b7uq.ipfs.w3s.link/Frame%2067%20(1).png",
       imageAspectRatio: '1:1',
@@ -88,8 +93,13 @@ app.frame('/vote', async (c) => {
     })
   }
 
+  // If FID 7472, create a unique document ID to allow multiple votes
+  const docId = canBypassVoteCheck(userId) 
+    ? `${userId}_${Date.now()}` // Unique ID for each vote
+    : userId;
+
   // Record new vote
-  await userVoteRef.set({
+  await db.collection('votes').doc(docId).set({
     userId,
     vote: buttonValue,
     timestamp: Date.now()
