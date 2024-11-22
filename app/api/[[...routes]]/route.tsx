@@ -50,7 +50,7 @@ function constructShareUrl(userId: string, vote: string, counts: { yes: number, 
 
 app.frame('/', async (c) => {
   return c.res({
-    image: "https://bafybeig7yyoqw7lsmbu46qkz25xs3yo3yapp6ezai6z3h3cqckny2qjo2a.ipfs.w3s.link/Farcaster%20(84).png",
+    image: "https://bafybeia5u2gao7y65ny3qp73m3ctmvqofvzspz3vi3veclwddxkhsy5lcu.ipfs.w3s.link/Frame%2067.png",
     imageAspectRatio: '1:1',
     intents: [
       <Button action="/vote" value="YES">Yes</Button>,
@@ -65,7 +65,7 @@ app.frame('/vote', async (c) => {
   
   if (!userId) {
     return c.res({
-      image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+      image: "https://bafybeia5u2gao7y65ny3qp73m3ctmvqofvzspz3vi3veclwddxkhsy5lcu.ipfs.w3s.link/Frame%2067.png",
       imageAspectRatio: '1:1',
       intents: [
         <Button>Please sign in to vote</Button>
@@ -79,7 +79,7 @@ app.frame('/vote', async (c) => {
   
   if (userVote.exists) {
     return c.res({
-      image: "https://bafybeigmlsqkjwg4wvig7eedv7mynlbvwbuzzm4zhjjirmx3ekhkeipr7q.ipfs.w3s.link/Farcaster%20(81).png",
+      image: "https://bafybeia6oa7cvd7bj6ttwkunq3xghbw3vcmzqhzsa6gdiunhlznga5b7uq.ipfs.w3s.link/Frame%2067%20(1).png",
       imageAspectRatio: '1:1',
       intents: [
         <Button action="/results">View Results</Button>,
