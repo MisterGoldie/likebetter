@@ -1,15 +1,41 @@
 /** @jsxImportSource frog/jsx */
 import { Button, Frog } from 'frog'
-import { devtools } from 'frog/dev'
 import { handle } from 'frog/next'
-import { serveStatic } from 'frog/serve-static'
+import { neynar } from 'frog/middlewares'
+import { NeynarVariables } from 'frog/middlewares'
 import { db } from '@/lib/firebase'
 
-const app = new Frog({
-  assetsPath: '/',
+// Add API constants
+const AIRSTACK_API_KEY = process.env.AIRSTACK_API_KEY as string;
+const NEYNAR_API_KEY = process.env.NEYNAR_API_KEY as string;
+
+// Add bypass helper
+function canBypassVoteCheck(fid: string): boolean {
+  return fid === '7472'; // Your FID for testing
+}
+
+export const app = new Frog<{ Variables: NeynarVariables }>({
   basePath: '/api',
-  title: 'Poll',
-})
+  imageOptions: {
+    width: 1080,
+    height: 1080,
+  },
+  imageAspectRatio: '1:1',
+  title: 'Bitcoin $100K Poll',
+  hub: {
+    apiUrl: "https://hubs.airstack.xyz",
+    fetchOptions: {
+      headers: {
+        "x-airstack-hubs": AIRSTACK_API_KEY
+      }
+    }
+  }
+}).use(
+  neynar({
+    apiKey: NEYNAR_API_KEY, 
+    features: ['interactor', 'cast'],
+  })
+);
 
 // Helper function to get vote counts
 async function getVoteCounts() {
@@ -46,11 +72,6 @@ function constructShareUrl(userId: string, vote: string, counts: { yes: number, 
   
   // Construct the Farcaster share URL
   return `https://warpcast.com/~/compose?text=${encodeURIComponent(shareText)}&embeds[]=${encodeURIComponent(shareUrl.toString())}`;
-}
-
-// Add this helper function
-function canBypassVoteCheck(fid: string): boolean {
-  return fid === '7472'; // Your FID for testing
 }
 
 app.frame('/', async (c) => {
@@ -181,8 +202,6 @@ app.frame('/share', async (c) => {
     ],
   })
 })
-
-devtools(app, { serveStatic })
 
 export const GET = handle(app)
 export const POST = handle(app)
