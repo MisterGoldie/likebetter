@@ -55,7 +55,7 @@ function canBypassVoteCheck(fid: string): boolean {
 
 app.frame('/', async (c) => {
   return c.res({
-    image: "https://bafybeia5u2gao7y65ny3qp73m3ctmvqofvzspz3vi3veclwddxkhsy5lcu.ipfs.w3s.link/Frame%2067.png",
+    image: "https://bafybeibrnaokvph2gyt7z7hfiiubg7qy253fa4liwaljekbsyaaasczwrm.ipfs.w3s.link/Frame%2067%20(6).png",
     imageAspectRatio: '1:1',
     intents: [
       <Button action="/vote" value="YES">Yes</Button>,
@@ -70,7 +70,7 @@ app.frame('/vote', async (c) => {
   
   if (!userId) {
     return c.res({
-      image: "https://bafybeiga2qjlywwqwquzd72gtxfyrltjupesucvpffr7hblw4fodv5r7fe.ipfs.w3s.link/Group%2062%20(3).png",
+      image: "https://bafybeibrnaokvph2gyt7z7hfiiubg7qy253fa4liwaljekbsyaaasczwrm.ipfs.w3s.link/Frame%2067%20(6).png",
       imageAspectRatio: '1:1',
       intents: [
         <Button>Please sign in to vote</Button>
@@ -137,7 +137,7 @@ app.frame('/results', async (c) => {
       <Button>Yes: {counts.yes.toString()} ({percentages.yes.toString()}%)</Button>,
       <Button>No: {counts.no.toString()} ({percentages.no.toString()}%)</Button>,
       <Button action="/">Back to Poll</Button>,
-      <Button.Link href={`https://warpcast.com/~/compose?text=${encodeURIComponent('Vote on whether /bitcoin will hit $100K today! Frame by @goldie')}&embeds[]=${encodeURIComponent('https://goldiesnftframes.xyz/api')}`}>Share Frame</Button.Link>
+      <Button.Link href={`https://warpcast.com/~/compose?text=${encodeURIComponent('Vote on whether /bitcoin will hit $100K this week. Frame by @goldie')}&embeds[]=${encodeURIComponent('https://goldiesnftframes.xyz/api')}`}>Share Frame</Button.Link>
     ],
   })
 })
@@ -147,7 +147,7 @@ app.frame('/share', async (c) => {
   
   if (!userId) {
     return c.res({
-      image: "https://bafybeia5u2gao7y65ny3qp73m3ctmvqofvzspz3vi3veclwddxkhsy5lcu.ipfs.w3s.link/Frame%2067.png",
+      image: "https://bafybeibrnaokvph2gyt7z7hfiiubg7qy253fa4liwaljekbsyaaasczwrm.ipfs.w3s.link/Frame%2067%20(6).png",
       imageAspectRatio: '1:1',
       intents: [
         <Button>Please sign in to share</Button>
